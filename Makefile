@@ -16,7 +16,7 @@ endif
 CFLAGS_SO     = $(CFLAGS)
 CFLAGS_EXE    = $(CFLAGS)
 
-SRCDIRS_CORE   = metadata detail queue wunit
+SRCDIRS_CORE   = detail queue wunit metadata
 SRCDIRS_COMMON = $(SRCDIRS_CORE) pool arena
 SRCDIRS_EXE    = $(SRCDIRS_COMMON) unit etc
 
@@ -78,7 +78,7 @@ $(EXETARGET): $(OBJS_EXE)
 	@$(CC) -o $@ $^ $(LDFLAGS_EXE)
 
 # --- Compilation ---
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: %.c $(GIT_HEADER)
 	@mkdir -p $(dir $@)
 
 	@printf "CC     %-50s (from %s)\n" "$@" "$<"
