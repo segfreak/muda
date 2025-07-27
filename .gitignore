@@ -55,3 +55,4 @@ dkms.conf
 *.dwo
 build/
 metadata/git.h
+metadata/ver.h

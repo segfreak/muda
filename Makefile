@@ -49,6 +49,8 @@ HDR_SRC_DIR := include/muda
 HDR_DST_DIR := $(INCLUDEDIR)/muda
 
 GIT_HEADER = metadata/git.h
+VER_HEADER = metadata/ver.h
+HEADERS    = $(GIT_HEADER) $(VER_HEADER)
 
 .PHONY: all buildlib buildexe shared static clean install uninstall
 
@@ -59,8 +61,10 @@ all: buildlib buildexe
 # --- Shared Library ---
 buildlib: shared static
 
-shared: $(LIBTARGET_SO) $(GIT_HEADER)
-static: $(LIBTARGET_A)  $(GIT_HEADER)
+metadata_hdr: $(HEADERS)
+
+shared: $(LIBTARGET_SO) metadata_hdr
+static: $(LIBTARGET_A) metadata_hdr
 
 $(LIBTARGET_SO): $(OBJS_SO)
 	@printf "LD     %-50s (from %d object files)\n" "$@" "$(words $^)"
@@ -78,7 +82,7 @@ $(EXETARGET): $(OBJS_EXE)
 	@$(CC) -o $@ $^ $(LDFLAGS_EXE)
 
 # --- Compilation ---
-$(OBJDIR)/%.o: %.c $(GIT_HEADER)
+$(OBJDIR)/%.o: %.c metadata_hdr
 	@mkdir -p $(dir $@)
 
 	@printf "CC     %-50s (from %s)\n" "$@" "$<"
@@ -94,6 +98,10 @@ $(OBJDIR)/%.o: %.c $(GIT_HEADER)
 $(GIT_HEADER):
 	@chmod +x ./scripts/gen_git_hdr.sh
 	@./scripts/gen_git_hdr.sh $(GIT_HEADER)
+
+$(VER_HEADER):
+	@chmod +x ./scripts/gen_ver_hdr.sh
+	@./scripts/gen_ver_hdr.sh $(VER_HEADER)
 
 # --- Run ---
 run: $(EXETARGET)
@@ -135,5 +143,5 @@ uninstall:
 # --- Clean ---
 clean:
 	@printf "RM     %-50s (includes target)\n" "$(BUILD_DIR)/"
-	@rm  -f $(GIT_HEADER)
+	@rm -rf $(HEADERS)
 	@rm -rf $(BUILD_DIR)/
