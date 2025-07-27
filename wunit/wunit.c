@@ -9,13 +9,13 @@ ut_register (unit_test_fn fn, const char *name)
 }
 
 WEAK int
-UT_RunAll (void)
+ut_run_all (void)
 {
   return 0;
 }
 
 WEAK void
-UT_BasicAssert (int condition, const char *cond_str, const char *msg)
+ut_basic_assert (int condition, const char *cond_str, const char *msg)
 {
   (void)condition;
   (void)cond_str;
