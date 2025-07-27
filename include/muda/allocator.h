@@ -1,5 +1,5 @@
-#ifndef ALLOCATOR_H
-#define ALLOCATOR_H
+#ifndef MUDA_ALLOCATOR_H
+#define MUDA_ALLOCATOR_H
 
 #include <stddef.h>
 

@@ -52,19 +52,19 @@ GIT_HEADER = metadata/git.h
 VER_HEADER = metadata/ver.h
 HEADERS    = $(GIT_HEADER) $(VER_HEADER)
 
-.PHONY: all buildlib buildexe shared static clean install uninstall
+.PHONY: all lib tests shared static clean docs install uninstall
 
 cleanbuild: clean all
 
-all: buildlib buildexe
+all: lib tests
 
 # --- Shared Library ---
-buildlib: shared static
+lib: shared static
 
 metadata_hdr: $(HEADERS)
 
-shared: $(LIBTARGET_SO) metadata_hdr
-static: $(LIBTARGET_A) metadata_hdr
+shared: metadata_hdr $(LIBTARGET_SO)
+static: metadata_hdr $(LIBTARGET_A)
 
 $(LIBTARGET_SO): $(OBJS_SO)
 	@printf "LD     %-50s (from %d object files)\n" "$@" "$(words $^)"
@@ -75,7 +75,7 @@ $(LIBTARGET_A): $(OBJS_SO)
 	@$(AR) rcs $@ $^
 
 # --- Executable ---
-buildexe: $(EXETARGET)
+tests: $(EXETARGET)
 
 $(EXETARGET): $(OBJS_EXE)
 	@printf "LD     %-50s (from %d object files)\n" "$@" "$(words $^)"
@@ -102,6 +102,9 @@ $(GIT_HEADER):
 $(VER_HEADER):
 	@chmod +x ./scripts/gen_ver_hdr.sh
 	@./scripts/gen_ver_hdr.sh $(VER_HEADER)
+
+docs:
+	doxygen
 
 # --- Run ---
 run: $(EXETARGET)

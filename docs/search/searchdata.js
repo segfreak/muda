@@ -1,0 +1,33 @@
+var indexSectionsWithContent =
+{
+  0: "_abcdflmnopqrstuw",
+  1: "ampu",
+  2: "ampquw",
+  3: "_mtu",
+  4: "_bcdflmnoprs",
+  5: "ampu",
+  6: "abnpu"
+};
+
+var indexSectionNames =
+{
+  0: "all",
+  1: "classes",
+  2: "files",
+  3: "functions",
+  4: "variables",
+  5: "typedefs",
+  6: "defines"
+};
+
+var indexSectionLabels =
+{
+  0: "All",
+  1: "Classes",
+  2: "Files",
+  3: "Functions",
+  4: "Variables",
+  5: "Typedefs",
+  6: "Macros"
+};
+
