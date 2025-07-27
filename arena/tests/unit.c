@@ -4,7 +4,7 @@
 
 #include "../../detail/cust_alloc.h"
 
-#include "../../include/muda/arena.h"
+#include "../../include/muda/allocator/arena.h"
 #include "../../unit/unit.h"
 
 #ifndef ARENA_SIZE

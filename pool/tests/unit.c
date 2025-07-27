@@ -3,7 +3,7 @@
 
 #include "../../detail/cust_alloc.h"
 
-#include "../../include/muda/pool.h"
+#include "../../include/muda/allocator/pool.h"
 #include "../../unit/unit.h"
 
 #ifndef POOL_CAPACITY

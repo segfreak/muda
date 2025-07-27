@@ -6,7 +6,7 @@
 
 #include "../detail/mutex.h"
 #include "../include/muda/allocator.h"
-#include "../include/muda/pool.h"
+#include "../include/muda/allocator/pool.h"
 
 void
 muda_pool_set_mutex (pool_ctx_t *ctx, void *mutex)

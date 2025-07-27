@@ -104,7 +104,8 @@ $(VER_HEADER):
 	@./scripts/gen_ver_hdr.sh $(VER_HEADER)
 
 docs:
-	doxygen
+	@rm -rf docs/
+	@doxygen
 
 # --- Run ---
 run: $(EXETARGET)

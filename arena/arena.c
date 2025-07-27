@@ -4,7 +4,7 @@
 
 #include "../detail/align.h"
 #include "../detail/mutex.h"
-#include "../include/muda/arena.h"
+#include "../include/muda/allocator/arena.h"
 
 void
 muda_arena_set_mutex (arena_ctx_t *ctx, void *mutex)
