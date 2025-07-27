@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../queue/aqueue.h"
+#include "../include/muda/aqueue.h"
 #include "unit.h"
 
 typedef struct unit_test

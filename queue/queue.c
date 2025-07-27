@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../include/muda/queue.h"
 #include "qnode.h"
-#include "queue.h"
 
 void
 muda_q_init (muda_queue_t *q)

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "aqueue.h"
+#include "../include/muda/aqueue.h"
 #include "qnode.h"
 
 #include "../detail/mutex.h"

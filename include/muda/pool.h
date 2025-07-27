@@ -1,7 +1,7 @@
 #ifndef POOL_H
 #define POOL_H
 
-#include "../allocator/allocator.h"
+#include "./allocator.h"
 #include <stddef.h>
 
 typedef struct pool_ctx

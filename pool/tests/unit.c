@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../include/muda/pool.h"
 #include "../../unit/unit.h"
-#include "../pool.h"
 
 #define POOL_CAPACITY 10
 #define BLOCK_SIZE    32

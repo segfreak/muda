@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../allocator/allocator.h"
 #include "../detail/mutex.h"
-#include "pool.h"
+#include "../include/muda/allocator.h"
+#include "../include/muda/pool.h"
 
 void
 muda_pool_set_mutex (pool_ctx_t *ctx, void *mutex)
