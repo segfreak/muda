@@ -91,6 +91,9 @@ $(function(){initNavTree('da/da9/allocator_8h.html','../../',''); });
   <div class="headertitle"><div class="title">allocator.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Custom allocator function type definitions for MUDA.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for allocator.h:</div>
@@ -108,9 +111,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:af1003d4fc96d2ecea7c03013a3272221" id="r_af1003d4fc96d2ecea7c03013a3272221"><td class="memItemLeft" align="right" valign="top">typedef void *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1003d4fc96d2ecea7c03013a3272221">allocator_malloc_fn</a>) (size_t)</td></tr>
+<tr class="memdesc:af1003d4fc96d2ecea7c03013a3272221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer type for custom memory allocation.  <br /></td></tr>
 <tr class="memitem:ae2cca35042dc66c188a2bd2648727cf5" id="r_ae2cca35042dc66c188a2bd2648727cf5"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2cca35042dc66c188a2bd2648727cf5">allocator_free_fn</a>) (void *)</td></tr>
+<tr class="memdesc:ae2cca35042dc66c188a2bd2648727cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer type for custom memory deallocation.  <br /></td></tr>
 </table>
-<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Custom allocator function type definitions for MUDA. </p>
+
+<p class="definition">Definition in file <a class="el" href="../../da/da9/allocator_8h_source.html">allocator.h</a>.</p>
+</div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
 <a id="ae2cca35042dc66c188a2bd2648727cf5" name="ae2cca35042dc66c188a2bd2648727cf5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2cca35042dc66c188a2bd2648727cf5">&#9670;&#160;</a></span>allocator_free_fn</h2>
 
@@ -123,7 +132,16 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/da9/allocator_8h_source.html#l00007">7</a> of file <a class="el" href="../../da/da9/allocator_8h_source.html">allocator.h</a>.</p>
+<p>Function pointer type for custom memory deallocation. </p>
+<p>A function that frees a block of memory previously allocated.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>Pointer to the memory block to free. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="../../da/da9/allocator_8h_source.html#l00030">30</a> of file <a class="el" href="../../da/da9/allocator_8h_source.html">allocator.h</a>.</p>
 
 </div>
 </div>
@@ -139,7 +157,17 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/da9/allocator_8h_source.html#l00006">6</a> of file <a class="el" href="../../da/da9/allocator_8h_source.html">allocator.h</a>.</p>
+<p>Function pointer type for custom memory allocation. </p>
+<p>A function that allocates a block of memory of the specified size.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>Number of bytes to allocate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the allocated memory block, or NULL on failure. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="../../da/da9/allocator_8h_source.html#l00020">20</a> of file <a class="el" href="../../da/da9/allocator_8h_source.html">allocator.h</a>.</p>
 
 </div>
 </div>
