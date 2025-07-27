@@ -1,4 +1,4 @@
-#include "../../include/muda/queue.h"
+#include "../../include/muda/queue/queue.h"
 #include "../../unit/unit.h"
 
 #include <stdalign.h>

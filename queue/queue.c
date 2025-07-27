@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/muda/queue.h"
+#include "../include/muda/queue/queue.h"
 #include "qnode.h"
 
 void
