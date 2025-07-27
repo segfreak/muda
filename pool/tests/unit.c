@@ -1,13 +1,18 @@
 #include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include "../../detail/cust_alloc.h"
 
 #include "../../include/muda/pool.h"
 #include "../../unit/unit.h"
 
+#ifndef POOL_CAPACITY
 #define POOL_CAPACITY 10
-#define BLOCK_SIZE    32
+#endif
+
+#ifndef BLOCK_SIZE
+#define BLOCK_SIZE 32
+#endif
 
 void
 test_basic_allocation ()
@@ -57,36 +62,6 @@ test_zero_block_size ()
   pthread_mutex_destroy (&mutex);
 }
 
-static _Atomic size_t _n_malloc_called = 0;
-static _Atomic size_t _n_free_called   = 0;
-
-void *
-nmalloc (size_t sz)
-{
-  _n_malloc_called++;
-  return malloc (sz);
-}
-
-void
-nfree (void *p)
-{
-  _n_free_called++;
-  free (p);
-}
-
-void *
-malloc_null (size_t sz)
-{
-  (void)sz;
-  return NULL;
-}
-
-void
-free_null (void *p)
-{
-  (void)p;
-}
-
 void
 test_allocator_override_0 ()
 {
@@ -94,7 +69,7 @@ test_allocator_override_0 ()
   pthread_mutex_t mutex;
   pthread_mutex_init (&mutex, NULL);
   muda_pool_set_mutex (&pool, &mutex);
-  muda_pool_set_allocator (&pool, nmalloc, nfree);
+  muda_pool_set_allocator (&pool, muda_detail_nmalloc, muda_detail_nfree);
   muda_pool_init (&pool, BLOCK_SIZE, POOL_CAPACITY);
 
   void *ptr = muda_pool_alloc (&pool);
@@ -104,8 +79,10 @@ test_allocator_override_0 ()
   muda_pool_destroy (&pool);
   pthread_mutex_destroy (&mutex);
 
-  ut_assert (_n_malloc_called > 0, "expected custom malloc to be called");
-  ut_assert (_n_free_called > 0, "expected custom free to be called");
+  ut_assert (muda_detail_mallocs_count () > 0,
+             "expected custom malloc to be called");
+  ut_assert (muda_detail_frees_count () > 0,
+             "expected custom free to be called");
 }
 
 void
@@ -115,7 +92,8 @@ test_allocator_override_1 ()
   pthread_mutex_t mutex;
   pthread_mutex_init (&mutex, NULL);
   muda_pool_set_mutex (&pool, &mutex);
-  muda_pool_set_allocator (&pool, malloc_null, free_null);
+  muda_pool_set_allocator (&pool, muda_detail_malloc_null,
+                           muda_detail_free_null);
   muda_pool_init (&pool, BLOCK_SIZE, POOL_CAPACITY);
 
   void *ptr = muda_pool_alloc (&pool);

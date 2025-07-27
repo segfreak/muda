@@ -16,8 +16,8 @@ endif
 CFLAGS_SO     = $(CFLAGS)
 CFLAGS_EXE    = $(CFLAGS)
 
-SRCDIRS_CORE   = detail queue wunit
-SRCDIRS_COMMON = $(SRCDIRS_CORE) pool
+SRCDIRS_CORE   = metadata detail queue wunit
+SRCDIRS_COMMON = $(SRCDIRS_CORE) pool arena
 SRCDIRS_EXE    = $(SRCDIRS_COMMON) unit etc
 
 rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
@@ -48,15 +48,19 @@ INCLUDEDIR = $(PREFIX)/include
 HDR_SRC_DIR := include/muda
 HDR_DST_DIR := $(INCLUDEDIR)/muda
 
-.PHONY: all buildlib buildexe clean install uninstall
+GIT_HEADER = metadata/git.h
+
+.PHONY: all buildlib buildexe shared static clean install uninstall
+
+cleanbuild: clean all
 
 all: buildlib buildexe
 
 # --- Shared Library ---
 buildlib: shared static
 
-shared: $(LIBTARGET_SO)
-static: $(LIBTARGET_A)
+shared: $(LIBTARGET_SO) $(GIT_HEADER)
+static: $(LIBTARGET_A)  $(GIT_HEADER)
 
 $(LIBTARGET_SO): $(OBJS_SO)
 	@printf "LD     %-50s (from %d object files)\n" "$@" "$(words $^)"
@@ -86,6 +90,10 @@ $(OBJDIR)/%.o: %.c
 	else \
 		$(CC) $(CFLAGS_EXE) -c $< -o $@; \
 	fi
+
+$(GIT_HEADER):
+	@chmod +x ./scripts/gen_git_hdr.sh
+	@./scripts/gen_git_hdr.sh $(GIT_HEADER)
 
 # --- Run ---
 run: $(EXETARGET)
@@ -127,4 +135,5 @@ uninstall:
 # --- Clean ---
 clean:
 	@printf "RM     %-50s (includes target)\n" "$(BUILD_DIR)/"
+	@rm  -f $(GIT_HEADER)
 	@rm -rf $(BUILD_DIR)/
