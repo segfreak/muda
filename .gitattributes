@@ -1,0 +1,6 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+docs/** linguist-vendored
+*.html linguist-vendored
+* text eol=lf
+*.png binary
