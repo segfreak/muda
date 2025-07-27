@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "../detail/mutex.h"
-#include "../include/muda/allocator.h"
 #include "../include/muda/allocator/pool.h"
 
 void
