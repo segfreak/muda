@@ -29,7 +29,7 @@ muda_pool_set_allocator (pool_ctx_t *ctx, allocator_malloc_fn _f_malloc,
   muda_detail_mutex_unlock (ctx->_mutex);
 }
 
-void
+int
 muda_pool_init (pool_ctx_t *ctx, size_t blk_sz, size_t cap)
 {
   if (!ctx->_f_malloc || !ctx->_f_free)
@@ -42,9 +42,19 @@ muda_pool_init (pool_ctx_t *ctx, size_t blk_sz, size_t cap)
   if (!ctx->_f_free)
     ctx->_f_free = free;
 
-  ctx->blk_sz    = (blk_sz > sizeof (void *)) ? blk_sz : sizeof (void *);
-  ctx->cap       = cap;
-  ctx->data      = ctx->_f_malloc (ctx->blk_sz * cap);
+  ctx->blk_sz = (blk_sz > sizeof (void *)) ? blk_sz : sizeof (void *);
+  ctx->cap    = cap;
+  ctx->data   = ctx->_f_malloc (ctx->blk_sz * cap);
+
+  if (!ctx->data)
+  {
+    ctx->free_list = NULL;
+    ctx->cap       = 0;
+    ctx->blk_sz    = 0;
+    muda_detail_mutex_unlock (ctx->_mutex);
+    return -1;
+  }
+
   ctx->free_list = NULL;
 
   for (size_t i = 0; i < cap; ++i)
@@ -55,6 +65,7 @@ muda_pool_init (pool_ctx_t *ctx, size_t blk_sz, size_t cap)
   }
 
   muda_detail_mutex_unlock (ctx->_mutex);
+  return 0;
 }
 
 void *

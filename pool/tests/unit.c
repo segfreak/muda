@@ -23,16 +23,17 @@ test_basic_allocation ()
   for (int i = 0; i < POOL_CAPACITY; ++i)
   {
     blocks[i] = muda_pool_alloc (&pool);
-    ut_assert (blocks[i] != NULL, "ptr must be nonnull");
+    ut_assert (blocks[i] != NULL, "expected non-null block on allocation");
     memset (blocks[i], 0xAB, BLOCK_SIZE);
   }
 
   void *fail_block = muda_pool_alloc (&pool);
-  ut_assert (fail_block == NULL, "");
+  ut_assert (fail_block == NULL,
+             "expected NULL on allocation after pool exhausted");
 
   muda_pool_free (&pool, blocks[5]);
   void *reused = muda_pool_alloc (&pool);
-  ut_assert (reused != NULL, "ptr must be nonnull");
+  ut_assert (reused != NULL, "expected block to be reused after free");
 
   muda_pool_destroy (&pool);
   pthread_mutex_destroy (&mutex);
@@ -48,50 +49,81 @@ test_zero_block_size ()
 
   muda_pool_init (&pool, 0, 1);
   void *ptr = muda_pool_alloc (&pool);
-  ut_assert (ptr != NULL, "ptr must be nonnull");
+  ut_assert (ptr != NULL,
+             "expected non-null pointer even for 0-sized blocks");
 
   muda_pool_free (&pool, ptr);
   muda_pool_destroy (&pool);
   pthread_mutex_destroy (&mutex);
 }
 
-static _Atomic int malloc_called = 0;
-static _Atomic int free_called   = 0;
+static _Atomic size_t _n_malloc_called = 0;
+static _Atomic size_t _n_free_called   = 0;
 
 void *
-my_malloc (size_t sz)
+nmalloc (size_t sz)
 {
-  malloc_called++;
+  _n_malloc_called++;
   return malloc (sz);
 }
 
 void
-my_free (void *p)
+nfree (void *p)
 {
-  free_called++;
+  _n_free_called++;
   free (p);
 }
 
+void *
+malloc_null (size_t sz)
+{
+  (void)sz;
+  return NULL;
+}
+
 void
-test_allocator_override ()
+free_null (void *p)
+{
+  (void)p;
+}
+
+void
+test_allocator_override_0 ()
 {
   pool_ctx_t      pool = { 0 };
   pthread_mutex_t mutex;
   pthread_mutex_init (&mutex, NULL);
   muda_pool_set_mutex (&pool, &mutex);
-  muda_pool_set_allocator (&pool, my_malloc, my_free);
+  muda_pool_set_allocator (&pool, nmalloc, nfree);
   muda_pool_init (&pool, BLOCK_SIZE, POOL_CAPACITY);
 
   void *ptr = muda_pool_alloc (&pool);
-  ut_assert (ptr != NULL, "ptr must be nonnull");
+  ut_assert (ptr != NULL,
+             "expected non-null allocation using custom allocator");
   muda_pool_free (&pool, ptr);
   muda_pool_destroy (&pool);
   pthread_mutex_destroy (&mutex);
 
-  ut_assert (malloc_called > 0,
-             "malloc_called counter must be greater than zero");
-  ut_assert (free_called > 0,
-             "free_called counter must be greater than zero");
+  ut_assert (_n_malloc_called > 0, "expected custom malloc to be called");
+  ut_assert (_n_free_called > 0, "expected custom free to be called");
+}
+
+void
+test_allocator_override_1 ()
+{
+  pool_ctx_t      pool = { 0 };
+  pthread_mutex_t mutex;
+  pthread_mutex_init (&mutex, NULL);
+  muda_pool_set_mutex (&pool, &mutex);
+  muda_pool_set_allocator (&pool, malloc_null, free_null);
+  muda_pool_init (&pool, BLOCK_SIZE, POOL_CAPACITY);
+
+  void *ptr = muda_pool_alloc (&pool);
+  ut_assert (ptr == NULL,
+             "expected non-null allocation using custom allocator");
+  muda_pool_free (&pool, ptr);
+  muda_pool_destroy (&pool);
+  pthread_mutex_destroy (&mutex);
 }
 
 void
@@ -107,7 +139,8 @@ test_full_alloc_and_free_cycle ()
   for (int i = 0; i < POOL_CAPACITY; ++i)
   {
     blocks[i] = muda_pool_alloc (&pool);
-    ut_assert (blocks[i] != NULL, "ptr must be nonnull");
+    ut_assert (blocks[i] != NULL,
+               "expected successful allocation in full cycle");
   }
 
   for (int i = 0; i < POOL_CAPACITY; ++i)
@@ -116,7 +149,8 @@ test_full_alloc_and_free_cycle ()
   for (int i = 0; i < POOL_CAPACITY; ++i)
   {
     void *ptr = muda_pool_alloc (&pool);
-    ut_assert (ptr != NULL, "ptr must be nonnull");
+    ut_assert (ptr != NULL,
+               "expected successful re-allocation after free");
   }
 
   muda_pool_destroy (&pool);
@@ -128,7 +162,8 @@ _unit (void)
 {
   test_basic_allocation ();
   test_zero_block_size ();
-  test_allocator_override ();
+  test_allocator_override_0 ();
+  test_allocator_override_1 ();
   test_full_alloc_and_free_cycle ();
 }
 
