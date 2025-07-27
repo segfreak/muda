@@ -62,4 +62,4 @@ void  muda_q_enqueue (muda_queue_t *q, void *data);
  */
 void *muda_q_dequeue (muda_queue_t *q);
 
-#endif /* MUDA_MUDA_QUEUE_H */
+#endif /* MUDA_QUEUE_QUEUE_H */
