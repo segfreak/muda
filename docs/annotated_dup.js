@@ -5,6 +5,7 @@ var annotated_dup =
     [ "muda_q", "d5/dbb/structmuda__q.html", "d5/dbb/structmuda__q" ],
     [ "muda_qnode", "d5/d3e/structmuda__qnode.html", "d5/d3e/structmuda__qnode" ],
     [ "muda_version", "d1/d70/structmuda__version.html", "d1/d70/structmuda__version" ],
+    [ "page_ctx", "dd/da0/structpage__ctx.html", "dd/da0/structpage__ctx" ],
     [ "pool_ctx", "d4/d69/structpool__ctx.html", "d4/d69/structpool__ctx" ],
     [ "unit_test", "d6/d5f/structunit__test.html", "d6/d5f/structunit__test" ]
 ];

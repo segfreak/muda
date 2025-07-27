@@ -17,7 +17,7 @@ CFLAGS_SO     = $(CFLAGS)
 CFLAGS_EXE    = $(CFLAGS)
 
 SRCDIRS_CORE   = detail queue wunit metadata
-SRCDIRS_COMMON = $(SRCDIRS_CORE) pool arena
+SRCDIRS_COMMON = $(SRCDIRS_CORE) pool arena page
 SRCDIRS_EXE    = $(SRCDIRS_COMMON) unit etc
 
 rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
