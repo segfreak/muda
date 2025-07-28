@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['maj_0',['maj',['../d1/d70/structmuda__version.html#a8dbb57e2a0fb989ff9daad65c792a21b',1,'muda_version']]],
-  ['min_1',['min',['../d1/d70/structmuda__version.html#a1231309c1e2fb2aca4883e695da9a410',1,'muda_version']]]
+  ['rear_0',['rear',['../d8/d95/structmuda__aq.html#ae57103421dc8714c1199341f6821bc5e',1,'muda_aq::rear'],['../d5/dbb/structmuda__q.html#a17a2fd65d610b1780617ed8e508b7f4a',1,'muda_q::rear']]]
 ];
